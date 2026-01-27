@@ -1,0 +1,54 @@
+{
+  "name": "gbr-gh",
+  "description": "🔮 Github Rest API client by Gleam BR",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "bunup",
+    "dev": "bunup --watch",
+    "type-check": "tsc --noEmit"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "author": {
+    "name": "@gleam-br",
+    "email": "contato@gleam.dev.br"
+  },
+  "keywords": [
+    "gleam",
+    "javascript",
+    "utilities",
+    "github",
+    "api.github.com",
+    "openapi",
+    "openapi-typescript"
+  ],
+  "repository": {
+    "url": "git+https://github.com/gleam-br/gbr_gh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gleam-br/gbr_gh/issues"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.3",
+    "bun-plugin-gleam": "^0.1.3",
+    "bunup": "^0.16.10",
+    "openapi-typescript": "^7.10.1",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "typescript": ">=4.5.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.15.0"
+  }
+}
