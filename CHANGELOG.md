@@ -12,10 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Update changelog by @github-actions[bot]
+- Update changelog by @github-actions[bot]
 - Update readme by @salespaulo
 - Initial commit by @salespaulo
 
 ### Removed
+- Remove echo to publish by @salespaulo
 - Remove errors and todos to publish first version by @salespaulo
 
 ## New Contributors
