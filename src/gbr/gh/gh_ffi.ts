@@ -22,7 +22,7 @@ let client: any = undefined;
  */
 export async function api_github_oas_fetch(url = "/", method = "GET", options = {}): Promise<any> {
   if (client === undefined) {
-    //await api_github_oas_load("./src/gbr/gh/gh_oas.ts")
+    await api_github_oas_load("./src/gbr/gh/gh_oas.ts")
     const { api_github_oas_client } = await import("./gh_oas.ts")
 
     client = api_github_oas_client()

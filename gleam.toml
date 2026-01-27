@@ -2,7 +2,7 @@ name = "gbr_gh"
 version = "1.0.0"
 description = "Gleam BR library to access the GitHub REST API v3"
 licences = ["Apache-2.0"]
-# repository = { type = "github", user = "", repo = "" }
+repository = { type = "github", user = "gleam-br", repo = "gbr_gh" }
 links = []
 target = "javascript"
 

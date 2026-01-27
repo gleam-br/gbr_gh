@@ -1,5 +1,5 @@
 ////
-//// Github REST API v3 super client
+//// Github REST API v3 client
 ////
 
 import gleam/bool
@@ -11,8 +11,85 @@ import gleam/javascript/promise
 import gleam/list
 import gleam/option.{type Option, None, Some}
 
-import gbr/gh/decoder
-import gbr/js/jscore.{type Object}
+/// Fetch "/" root github resources
+///
+/// Return all init urls
+///
+pub fn root() -> promise.Promise(Result(GHRoot, List(decode.DecodeError))) {
+  fetch(path: "/", method: http.Get, options: None)
+  |> promise.map(fn(dyn) { decode.run(dyn, root_decoder()) })
+}
+
+/// Fetch organization by name
+///
+/// - name: Org name
+/// - query: Query filter
+///
+pub fn org(
+  name: String,
+  query: Option(GHQuery),
+) -> promise.Promise(Result(GHOrg, List(decode.DecodeError))) {
+  let options =
+    query
+    |> to_query()
+    |> option.map(fn(query) {
+      GHApiOptions(
+        query: Some(query),
+        path: None,
+        header: None,
+        cookie: None,
+        body: None,
+      )
+    })
+
+  fetch(path: "/orgs/" <> name, method: http.Get, options:)
+  |> promise.map(fn(dyn) { decode.run(dyn, org_decoder()) })
+}
+
+/// Fetch repositories from org name filtering or not
+///
+/// - org: Org name
+/// - query: Query filter
+///
+pub fn repos(
+  org: String,
+  query: Option(GHQuery),
+) -> promise.Promise(Result(List(GHRepoSimple), List(decode.DecodeError))) {
+  let options =
+    query
+    |> to_query()
+    |> option.map(fn(query) {
+      GHApiOptions(
+        query: Some(query),
+        path: None,
+        header: None,
+        cookie: None,
+        body: None,
+      )
+    })
+
+  fetch(path: "/orgs/" <> org <> "/repos", method: http.Get, options:)
+  |> promise.map(fn(dyn) {
+    decode.run(dyn |> echo, repo_decoder() |> decode.list())
+  })
+}
+
+/// Fetch github api from url
+///
+/// - path: Github api path
+/// - method: Http method
+/// - options: Github api options { query, path, header, cookie, body}
+///
+pub fn fetch(
+  path path: String,
+  method method: http.Method,
+  options options: Option(GHApiOptions),
+) -> promise.Promise(Dynamic) {
+  let method = http.method_to_string(method)
+  let opt = opt_to_dynamic(options)
+
+  do_fetch(path:, method:, opt:)
+}
 
 /// Github response from "/" root.
 ///
@@ -101,11 +178,6 @@ pub type GHApiOptions {
   )
 }
 
-pub fn root() -> promise.Promise(Result(GHRoot, List(decode.DecodeError))) {
-  fetch(path: "/", method: http.Get, options: None)
-  |> promise.map(fn(dyn) { decode.run(dyn, root_decoder()) })
-}
-
 pub type GHQuery {
   GHQuery(
     // "all" | "public" | "private" | "forks" | "sources" | "member" | "internal";
@@ -119,61 +191,6 @@ pub type GHQuery {
   )
 }
 
-pub fn org(
-  name: String,
-  query: Option(GHQuery),
-) -> promise.Promise(Result(GHOrg, List(decode.DecodeError))) {
-  let options =
-    query
-    |> to_query()
-    |> option.map(fn(query) {
-      GHApiOptions(
-        query: Some(query),
-        path: None,
-        header: None,
-        cookie: None,
-        body: None,
-      )
-    })
-
-  fetch(path: "/orgs/" <> name, method: http.Get, options:)
-  |> promise.map(fn(dyn) { decode.run(dyn, org_decoder()) })
-}
-
-pub fn repos(
-  org: String,
-  query: Option(GHQuery),
-) -> promise.Promise(Result(List(GHRepoSimple), List(decode.DecodeError))) {
-  let options =
-    query
-    |> to_query()
-    |> option.map(fn(query) {
-      GHApiOptions(
-        query: Some(query),
-        path: None,
-        header: None,
-        cookie: None,
-        body: None,
-      )
-    })
-
-  fetch(path: "/orgs/" <> org <> "/repos", method: http.Get, options:)
-  |> promise.map(fn(dyn) {
-    decode.run(dyn |> echo, repo_decoder() |> decode.list())
-  })
-}
-
-pub fn fetch(
-  path path: String,
-  method method: http.Method,
-  options options: Option(GHApiOptions),
-) -> promise.Promise(Object) {
-  let method = http.method_to_string(method)
-  let opt = opt_to_dynamic(options)
-
-  do_fetch(path:, method:, opt:)
-}
-
 // PRIVATE
 //
 
@@ -182,7 +199,7 @@ fn do_fetch(
   path path: String,
   method method: String,
   opt options: Dynamic,
-) -> promise.Promise(Object)
+) -> promise.Promise(Dynamic)
 
 fn opt_to_dynamic(opt: Option(GHApiOptions)) -> Dynamic {
   use <- bool.guard(option.is_none(opt), dynamic.nil())
