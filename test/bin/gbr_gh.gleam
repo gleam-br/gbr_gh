@@ -1,15 +1,14 @@
 import gleam/io
 import gleam/javascript/promise
-import gleam/list
 import gleam/option.{None, Some}
-import gleam/string
 
 import gbr/gh
-import gbr/shared/error
 
 pub fn main() {
   use root <- promise.map(gh.root())
   let assert Ok(root) = root
+
+  echo root
 
   use user <- promise.map(gh.repos(
     "gleam-br",

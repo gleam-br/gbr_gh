@@ -1,9 +1,11 @@
+import gleam/io
+
 // Open issue in gleam repo
 //
 // https://github.com/gleam-lang/gleam/issues/4287
 //
 pub fn repo_decoder() {
-  todo
+  io.println("Wait but solution")
   //   use id <- decode.field("id", decode.int)
   //   use node_id <- decode.field("node_id", decode.string)
   //   use name <- decode.field("name", decode.string)

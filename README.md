@@ -56,6 +56,8 @@ pub fn main() -> Nil {
   )
   let assert Ok(root) = root
 
+  echo root
+
   use user <- promise.map(gh.repos(
     "gleam-br",
     Some(gh.GHQuery(
