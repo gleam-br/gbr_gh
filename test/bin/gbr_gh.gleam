@@ -1,5 +1,6 @@
 import gleam/io
 import gleam/javascript/promise
+import gleam/list
 import gleam/option.{None, Some}
 
 import gbr/gh
@@ -8,9 +9,10 @@ pub fn main() {
   use root <- promise.map(gh.root())
   let assert Ok(root) = root
 
-  echo root
+  io.println(">>> ROOT OK")
+  io.println(root.current_user_url)
 
-  use user <- promise.map(gh.repos(
+  use repos <- promise.map(gh.repos(
     "gleam-br",
     Some(gh.GHQuery(
       kind: Some("sources"),
@@ -21,47 +23,14 @@ pub fn main() {
     )),
   ))
 
-  let assert Ok(user) = user
+  let assert Ok(repos) = repos
 
   io.print(">>> USER OK")
-  echo user
+  let _ = {
+    use repo <- list.map(repos)
+    io.println(repo.name)
+    io.println(repo.git_url)
+  }
 
   Nil
-  // use root <- promise.map(gh.root())
-
-  // case root {
-  //   Ok(_root) -> {
-  //     use user <- promise.map(gh.repos(
-  //       "gleam-br",
-  //       Some(gh.GHQuery(
-  //         kind: Some("sources"),
-  //         sort: None,
-  //         direction: None,
-  //         per_page: None,
-  //         page: None,
-  //       )),
-  //     ))
-  //     case user {
-  //       Ok(user) -> {
-  //         io.print(">>> USER OK")
-  //         echo user
-  //         Nil
-  //       }
-  //       Error(err) -> {
-  //         list.map(err, error.decode_to_string)
-  //         |> string.join("\n")
-  //         |> io.print_error()
-  //         Nil
-  //       }
-  //     }
-  //     Nil
-  //   }
-  //   Error(err) -> {
-  //     list.map(err, error.decode_to_string)
-  //     |> string.join("\n")
-  //     |> io.print_error()
-
-  //     promise.resolve(Nil)
-  //   }
-  // }
 }

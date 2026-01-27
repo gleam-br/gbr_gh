@@ -51,14 +51,13 @@ import gbr/gh
 import gbr/shared/error
 
 pub fn main() -> Nil {
-  use root <- promise.map(
-    gh.root()
-  )
+  use root <- promise.map(gh.root())
   let assert Ok(root) = root
 
-  echo root
+  io.println(">>> ROOT OK")
+  io.println(root.current_user_url)
 
-  use user <- promise.map(gh.repos(
+  use repos <- promise.map(gh.repos(
     "gleam-br",
     Some(gh.GHQuery(
       kind: Some("sources"),
@@ -69,10 +68,14 @@ pub fn main() -> Nil {
     )),
   ))
 
-  let assert Ok(user) = user
+  let assert Ok(repos) = repos
 
   io.print(">>> USER OK")
-  echo user
+  let _ = {
+    use repo <- list.map(repos)
+    io.println(repo.name)
+    io.println(repo.git_url)
+  }
 
   Nil
 }

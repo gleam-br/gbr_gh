@@ -69,9 +69,7 @@ pub fn repos(
     })
 
   fetch(path: "/orgs/" <> org <> "/repos", method: http.Get, options:)
-  |> promise.map(fn(dyn) {
-    decode.run(dyn |> echo, repo_decoder() |> decode.list())
-  })
+  |> promise.map(fn(dyn) { decode.run(dyn, repo_decoder() |> decode.list()) })
 }
 
 /// Fetch github api from url
