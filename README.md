@@ -5,6 +5,8 @@
 
 It is a library to access the GitHub REST API v3. This library enables you to manage GitHub resources such as repositories, user profiles, and organizations.
 
+> Only target javascript for now!
+
 ## Support
 
 - Browsers: See fetch API support (widely-available in all major browsers)
