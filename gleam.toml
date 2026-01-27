@@ -7,8 +7,6 @@ links = []
 target = "javascript"
 
 [dependencies]
-gbr_js = { path = "../gbr_js" }
-gbr_shared = { path = "../gbr_shared" }
 gleam_stdlib = "~> 0.68"
 gleam_http = "~> 4.3"
 gleam_javascript = "~> 1.0.0"
