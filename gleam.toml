@@ -1,15 +1,16 @@
 name = "gbr_gh"
-version = "1.0.0"
-description = "Gleam BR library to access the GitHub REST API v3"
-licences = ["Apache-2.0"]
-repository = { type = "github", user = "gleam-br", repo = "gbr_gh" }
-links = []
+version = "1.0.0-alpha"
 target = "javascript"
 
+description = "Gleam BR library to access the GitHub REST API v3"
+repository = { type = "github", user = "gleam-br", repo = "gbr_gh" }
+licences = ["Apache-2.0"]
+links = []
+
 [dependencies]
-gleam_stdlib = "~> 0.68"
+gleam_stdlib = "~> 0.69"
 gleam_http = "~> 4.3"
-gleam_javascript = "~> 1.0.0"
+gleam_javascript = "~> 1.0"
 
 [dev-dependencies]
 gleeunit = "~> 1.9"
